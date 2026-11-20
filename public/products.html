@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products | ABC Trading</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+tailwind.config = {theme:{extend:{colors:{primary:'#0F4C81'}}}}
+</script>
+</head>
+<body class="text-gray-700">
+<nav class="bg-primary text-white sticky top-0 z-50">
+<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+  <a href="/" class="text-xl font-bold">ABC TRADING</a>
+  <div class="hidden md:flex gap-6">
+    <a href="/" class="hover:text-yellow-300">Home</a>
+    <a href="/products.html" class="hover:text-yellow-300">Products</a>
+    <a href="/about.html" class="hover:text-yellow-300">About Us</a>
+    <a href="/contact.html" class="hover:text-yellow-300">Contact</a>
+  </div>
+</div>
+</nav>
+<section class="py-12">
+<div class="container mx-auto px-4">
+<h1 class="text-3xl font-bold mb-8">Our Products</h1>
+<div class="grid md:grid-cols-3 gap-6">
+  <a href="/product-detail.html?cat=Hardware&prod=Stainless Steel Fitting" class="border rounded-lg p-6 hover:shadow-lg transition">
+    <h3 class="text-xl font-semibold text-primary">Hardware Parts</h3>
+    <p class="mt-2">Stainless steel fittings, fasteners, custom machining parts.</p>
+    <span class="inline-block mt-3 text-primary">Send Inquiry →</span>
+  </a>
+  <a href="/product-detail.html?cat=Plastic&prod=Plastic Injection Molding" class="border rounded-lg p-6 hover:shadow-lg transition">
+    <h3 class="text-xl font-semibold text-primary">Plastic Products</h3>
+    <p class="mt-2">Injection molding, custom plastic housing, accessories.</p>
+    <span class="inline-block mt-3 text-primary">Send Inquiry →</span>
+  </a>
+  <a href="/product-detail.html?cat=Packaging&prod=Paper Packaging Box" class="border rounded-lg p-6 hover:shadow-lg transition">
+    <h3 class="text-xl font-semibold text-primary">Packaging</h3>
+    <p class="mt-2">Color box, kraft box, custom packaging solution.</p>
+    <span class="inline-block mt-3 text-primary">Send Inquiry →</span>
+  </a>
+</div>
+</div>
+</section>
+<footer class="bg-gray-900 text-white py-10">
+<div class="container mx-auto px-4">
+<div class="grid md:grid-cols-3 gap-8">
+  <div>
+    <h4 class="font-bold text-lg mb-3">ABC Trading</h4>
+    <p>Professional export supplier, support OEM & ODM.</p>
+  </div>
+  <div>
+    <h4 class="font-bold text-lg mb-3">Contact</h4>
+    <p>Email: sales@abctrading.com</p>
+    <p>WhatsApp: +86 13800138000</p>
+  </div>
+  <div>
+    <h4 class="font-bold text-lg mb-3">Admin</h4>
+    <a href="/admin/login.html" class="text-yellow-400">Backstage Login</a>
+  </div>
+</div>
+</div>
+</footer>
+</body>
+</html>

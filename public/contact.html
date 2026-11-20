@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us | ABC Trading</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+tailwind.config = {theme:{extend:{colors:{primary:'#0F4C81'}}}}
+</script>
+</head>
+<body class="text-gray-700">
+<nav class="bg-primary text-white sticky top-0 z-50">
+<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+  <a href="/" class="text-xl font-bold">ABC TRADING</a>
+  <div class="hidden md:flex gap-6">
+    <a href="/" class="hover:text-yellow-300">Home</a>
+    <a href="/products.html" class="hover:text-yellow-300">Products</a>
+    <a href="/about.html" class="hover:text-yellow-300">About Us</a>
+    <a href="/contact.html" class="hover:text-yellow-300">Contact</a>
+  </div>
+</div>
+</nav>
+<section class="py-12">
+<div class="container mx-auto px-4 grid md:grid-cols-2 gap-10">
+  <div>
+    <h1 class="text-3xl font-bold mb-4">Contact Us</h1>
+    <p>Email: sales@abctrading.com</p>
+    <p>WhatsApp: +86 13800138000</p>
+    <p>Business Hours: UTC+8 9:00 - 18:00</p>
+  </div>
+  <div class="border rounded-xl p-6 shadow-sm">
+    <h3 class="text-xl font-semibold mb-4">General Inquiry</h3>
+    <form id="inquiryForm">
+      <input type="hidden" name="category" value="General">
+      <input type="hidden" name="product" value="General Inquiry">
+      <div class="grid gap-4">
+        <input class="border w-full px-3 py-2 rounded" name="name" placeholder="Your Name *" required>
+        <input class="border w-full px-3 py-2 rounded" name="email" placeholder="Email *" required type="email">
+        <input class="border w-full px-3 py-2 rounded" name="whatsapp" placeholder="WhatsApp / Phone">
+        <input class="border w-full px-3 py-2 rounded" name="country" placeholder="Country">
+        <input class="border w-full px-3 py-2 rounded" name="quantity" placeholder="Quantity">
+        <textarea class="border w-full px-3 py-2 rounded h-28" name="message" placeholder="Your message..."></textarea>
+        <button type="submit" class="bg-primary text-white py-3 rounded hover:bg-sky-800">Submit Inquiry</button>
+        <div id="msg" class="text-center"></div>
+      </div>
+    </form>
+  </div>
+</div>
+</section>
+<script>
+const form = document.getElementById('inquiryForm');
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const fd = new FormData(form);
+  const data = Object.fromEntries(fd.entries());
+  const res = await fetch('/api/submit-inquiry',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(data)
+  });
+  const ret = await res.json();
+  const msgBox = document.getElementById('msg');
+  if(ret.ok){
+    msgBox.innerHTML = '<span class="text-green-600">Thank you! We will reply soon.</span>';
+    form.reset();
+  }else{
+    msgBox.innerHTML = '<span class="text-red-500">Submit failed, try later.</span>';
+  }
+})
+</script>
+<footer class="bg-gray-900 text-white py-10">
+<div class="container mx-auto px-4">
+<div class="grid md:grid-cols-3 gap-8">
+  <div>
+    <h4 class="font-bold text-lg mb-3">ABC Trading</h4>
+    <p>Professional export supplier, support OEM & ODM.</p>
+  </div>
+  <div>
+    <h4 class="font-bold text-lg mb-3">Contact</h4>
+    <p>Email: sales@abctrading.com</p>
+    <p>WhatsApp: +86 13800138000</p>
+  </div>
+  <div>
+    <h4 class="font-bold text-lg mb-3">Admin</h4>
+    <a href="/admin/login.html" class="text-yellow-400">Backstage Login</a>
+  </div>
+</div>
+</div>
+</footer>
+</body>
+</html>
