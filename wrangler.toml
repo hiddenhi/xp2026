@@ -1,0 +1,8 @@
+name = "trade-inquiry-site"
+compatibility_date = "2025-10-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "trade_inquiry_db"
+database_id = "19947237-e753-48f4-8554-e529b8755aa8"
