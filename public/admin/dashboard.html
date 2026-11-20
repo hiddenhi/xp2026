@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inquiry Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#0F4C81'}}}}</script>
+</head>
+<body class="bg-gray-50">
+<div class="container mx-auto px-4 py-6">
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold">Inquiry & Customer Management</h1>
+  <div>
+    <button id="exportBtn" class="bg-green-600 text-white px-4 py-2 rounded mr-2">Export CSV</button>
+    <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+  </div>
+</div>
+<div class="overflow-auto bg-white rounded shadow">
+<table class="w-full text-sm">
+<thead class="bg-gray-100">
+<tr>
+<th class="p-2 border">ID</th>
+<th class="p-2 border">Category</th>
+<th class="p-2 border">Product</th>
+<th class="p-2 border">Name</th>
+<th class="p-2 border">Email/WhatsApp</th>
+<th class="p-2 border">Country/Qty</th>
+<th class="p-2 border">Status</th>
+<th class="p-2 border">Remark</th>
+<th class="p-2 border">Time</th>
+<th class="p-2 border">Action</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+</div>
+</div>
+<script>
+const statusList = ["new","follow","quoted","closed","invalid"];
+const statusMap = {
+  new:"🟡 New",
+  follow:"🔵 Following",
+  quoted:"🟢 Quoted",
+  closed:"✅ Closed",
+  invalid:"❌ Invalid"
+};
+let list = [];
+async function loadList(){
+  const res = await fetch("/api/inquiry-list");
+  const ret = await res.json();
+  if(!ret.ok) { alert("Please login"); location="/admin/login.html"; return; }
+  list = ret.data;
+  renderTable();
+}
+function renderTable(){
+  const tb = document.getElementById("tableBody");
+  tb.innerHTML = "";
+  list.forEach(item=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+    <td class="p-2 border">${item.id}</td>
+    <td class="p-2 border">${item.category}</td>
+    <td class="p-2 border">${item.product}</td>
+    <td class="p-2 border">${item.name}</td>
+    <td class="p-2 border">${item.email}<br>${item.whatsapp||""}</td>
+    <td class="p-2 border">${item.country||""} / ${item.quantity||""}</td>
+    <td class="p-2 border">
+      <select data-id="${item.id}" class="statusSel border">
+        ${statusList.map(s=>`<option value="${s}" ${item.status===s?"selected":""}>${statusMap[s]}</option>`).join("")}
+      </select>
+    </td>
+    <td class="p-2 border"><input class="remarkInp border w-full" data-id="${item.id}" value="${item.remark||""}"></td>
+    <td class="p-2 border">${item.created_at}</td>
+    <td class="p-2 border">
+      <button onclick="save(${item.id})" class="bg-blue-500 text-white px-2 py-1 rounded">Save</button>
+      <button onclick="del(${item.id})" class="bg-red-500 text-white px-2 py-1 rounded">Del</button>
+    </td>
+    `;
+    tb.appendChild(tr);
+  })
+}
+window.save = async function(id){
+  const sel = document.querySelector(`.statusSel[data-id="${id}"]`);
+  const inp = document.querySelector(`.remarkInp[data-id="${id}"]`);
+  await fetch("/api/inquiry-update",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({id, status:sel.value, remark:inp.value})
+  })
+  alert("Saved");
+  loadList();
+}
+window.del = async function(id){
+  if(!confirm("Delete this inquiry?")) return;
+  await fetch("/api/inquiry-delete",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({id})
+  })
+  loadList();
+}
+document.getElementById("exportBtn").onclick = ()=>location="/api/export-csv";
+document.getElementById("logoutBtn").onclick = async ()=>{
+  await fetch("/api/logout",{method:"POST"});
+  location="/admin/login.html";
+}
+loadList();
+</script>
+</body>
+</html>
